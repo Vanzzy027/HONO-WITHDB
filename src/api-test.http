@@ -1,0 +1,51 @@
+# Base URL
+@baseUrl = http://localhost:5050
+
+
+//Showing my name
+### Root
+GET {{baseUrl}}/
+
+
+
+### Get all books
+GET {{baseUrl}}/api/books
+
+### Get book by id
+GET {{baseUrl}}/api/books/1
+
+
+//To work on this two requirements by author and title
+### Search by author 
+GET {{baseUrl}}/api/books?author=Denis
+
+### Searching by title 
+GET {{baseUrl}}/books?title=New Book
+
+
+### Create a new book
+POST {{baseUrl}}/books
+Content-Type: application/json
+
+{
+  "title": "New Book",
+  "author": "Tester",
+  "description": "Created via api-tests",
+  "published": "2025-01-01",
+  "pages": 123
+}
+
+### Update 
+PUT {{baseUrl}}/books/4
+Content-Type: application/json
+
+{
+  "title": "Here we Go 1",
+  "author": "Denis Wachira 1",
+  "description": "Created api-tests 1",
+  "published": "2012-11-03",
+  "pages": 313
+}
+
+### Delete a book
+DELETE {{baseUrl}}/books/4
