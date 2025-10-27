@@ -1,6 +1,6 @@
 -- Create the Books table
 CREATE TABLE Books (
-    id INT PRIMARY KEY IDENTITY(1,1), -- *** ID increment! ***
+    id INT PRIMARY KEY IDENTITY(1,1), --  ID increment! 
     title VARCHAR(255) NOT NULL,
     author VARCHAR(255) NOT NULL,
     description NVARCHAR(MAX),

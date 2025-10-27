@@ -1,12 +1,12 @@
 import sql from 'mssql';
 import 'dotenv/config';
 
-// MSSQL Database Configuration from environment variables
+// MSSQL DB Config
 const sqlConfig = {
     user: process.env.DB_USER as string,
     password: process.env.DB_PASSWORD as string,
-    server: process.env.DB_SERVER as string, // e.g., 'localhost' or 'VANZZY\\SQLEXPRESS'
-    database: process.env.DB_DATABASE as string, // e.g., 'BooksDB'
+    server: process.env.DB_SERVER as string, // the DB server
+    database: process.env.DB_DATABASE as string,
     port: parseInt(process.env.DB_PORT || '1433'),
     connectionTimeout: 15000,
     requestTimeout: 15000,
@@ -24,7 +24,7 @@ const sqlConfig = {
 let pool: sql.ConnectionPool | null = null;
 
 /**
- * Initializes and returns the database connection pool.
+ * Initializes and returns db connection pool.
  * Logs success or failure internally.
  * @returns {Promise<sql.ConnectionPool>} The connected pool.
  */
@@ -40,26 +40,23 @@ export const initDatabaseConnection = async (): Promise<sql.ConnectionPool> => {
         return pool;
     } catch (error) {
         console.error('Database Connection Failed!', error);
-        // Re-throw the error so the calling function (index.ts) can handle it
+// Re-throw the error for the calling function  can handle it
         throw error;
     }
 };
 
-/**
- * Simplified query execution function using the pool.
- */
+//Query execution function using the pool.
 export const dbConnection = {
     execute: async (query: string, params: any[] = []): Promise<sql.IResult<any>> => {
         const currentPool = await initDatabaseConnection();
         const request = currentPool.request();
 
-        // Add parameters to the request
+        // Add parameters  // Using positional parameters p0, p1, etc.
         params.forEach((param, index) => {
-            // Using positional parameters p0, p1, etc.
+            
             request.input(`p${index}`, param);
         });
 
-        // Replace '?' placeholders in the query with mssql-compatible named parameters (@p0, @p1, etc.)
         const parameterizedQuery = query.replace(/\?/g, (match, offset, str) => {
             const paramIndex = str.slice(0, offset).split('?').length - 1;
             return `@p${paramIndex}`;
